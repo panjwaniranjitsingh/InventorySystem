@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class ChestManager : MonoBehaviour
 {
-    [SerializeField] GameObject[] ChestSlots;
+    [SerializeField] Chest[] ChestSlots;
     [SerializeField] ChestScriptableObjectList chestSOL;
     // Start is called before the first frame update
     void Start()
@@ -23,7 +23,15 @@ public class ChestManager : MonoBehaviour
     {
         //Create Chest
         int randomChest = UnityEngine.Random.Range(0, chestSOL.Chests.Length);
-        ChestSlots[0].transform.GetChild(0).GetComponent<Text>().text = chestSOL.Chests[randomChest].TimeToUnlockInSeconds.ToString();
-        ChestSlots[0].transform.GetChild(1).GetComponent<Text>().text = chestSOL.Chests[randomChest].Type.ToString();
+        for(int i=0;i<ChestSlots.Length;i++)
+        {
+            Chest chestScript = ChestSlots[i].GetComponent<Chest>();
+            if (chestScript.empty)
+            {
+                chestScript.SetChestData(chestSOL.Chests[randomChest]);
+                i = ChestSlots.Length+1;
+            }
+        }
+        
     }
 }
