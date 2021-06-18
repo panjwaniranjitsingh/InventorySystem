@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b246c24ba5110f845850f7570e105f1e, type: 3}
+  m_Name: ChestScriptableObjectList
+  m_EditorClassIdentifier: 
+  Chests:
+  - Type: Common
+    minCoins: 100
+    maxCoins: 200
+    minGems: 10
+    maxGems: 20
+    TimeToUnlockInSeconds: 900
+  - Type: Rare
+    minCoins: 300
+    maxCoins: 500
+    minGems: 20
+    maxGems: 40
+    TimeToUnlockInSeconds: 1800
+  - Type: Epic
+    minCoins: 600
+    maxCoins: 800
+    minGems: 45
+    maxGems: 60
+    TimeToUnlockInSeconds: 3600
+  - Type: Legendary
+    minCoins: 1000
+    maxCoins: 1200
+    minGems: 80
+    maxGems: 100
+    TimeToUnlockInSeconds: 10800
