@@ -15,5 +15,5 @@ public class ChestScriptableObject
     public int maxCoins;
     public int minGems;
     public int maxGems;
-    public float TimeToUnlockInSeconds;
+    public int TimeToUnlockInSeconds;
 }
