@@ -10,42 +10,57 @@ public class ChestManager : MonoSingleton<ChestManager>
     [SerializeField] ChestScriptableObjectList chestSOL;
     [SerializeField] GameObject Message;
     [SerializeField] List<Chest> chestToUnlock;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    [SerializeField] int AllowedChestToAdd = 3;
+    public bool timerStarted = false;
 
     public void CreateChest()
     {
         //Create Chest
-        int randomChest = UnityEngine.Random.Range(0, chestSOL.Chests.Length);
-        int chestFull = 0;
+        int randomChest = Random.Range(0, chestSOL.Chests.Length);
         for(int i=0;i<ChestSlots.Length;i++)
         {
             Chest chestScript = ChestSlots[i].GetComponent<Chest>();
-            if (chestScript.empty)
+            
+            if (chestToUnlock.Count == 0)
             {
-                chestScript.SetChestData(chestSOL.Chests[randomChest]);
-                chestToUnlock.Add(chestScript);
-                if (chestToUnlock.Count == 1)
-                    chestScript.StartTimer();
+                AddChestToSlot(randomChest, chestScript);
+                chestScript.canUnlock = true;
                 i = ChestSlots.Length + 1;
             }
             else
-                chestFull++;
+            {
+                Debug.Log("Chest to unlock is 1");
+                if (timerStarted && chestToUnlock.Count == AllowedChestToAdd)
+                {
+                    Debug.Log("Allowed chest reached");
+                    StartCoroutine(DisplayMessage("Allowed chest reached"));
+                    return;
+                }
+                if (chestScript.empty)
+                {
+                    chestScript.SetChestData(chestSOL.Chests[randomChest]);
+                    chestToUnlock.Add(chestScript);
+                    i = ChestSlots.Length + 1;
+                }
+            }
         }
-        if(chestFull==ChestSlots.Length)
+
+        
+
+        if (chestToUnlock.Count == ChestSlots.Length)
         {
             //All chests are filled
             Debug.Log("All chest slots are full");
             StartCoroutine(DisplayMessage("All chest slots are full"));
+        }
+    }
+
+    private void AddChestToSlot(int randomChest,Chest chestScript)
+    {
+        if (chestScript.empty)
+        {
+            chestScript.SetChestData(chestSOL.Chests[randomChest]);
+            chestToUnlock.Add(chestScript);
         }
     }
 
@@ -57,9 +72,14 @@ public class ChestManager : MonoSingleton<ChestManager>
         Message.SetActive(false);
     }
 
-    public void UnlockNextChest(Chest unlockedChest)
+    public void UnlockNextChest()
+    {
+        chestToUnlock[1].canUnlock=true;
+        timerStarted = false;
+    }
+
+    public void RemoveChestFromSlot(Chest unlockedChest)
     {
         chestToUnlock.Remove(unlockedChest);
-        chestToUnlock[0].StartTimer();
     }
 }

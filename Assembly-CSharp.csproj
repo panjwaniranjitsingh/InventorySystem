@@ -61,6 +61,7 @@
      <Compile Include="Assets\Scripts\MonoSingleton.cs" />
      <Compile Include="Assets\Scripts\Player.cs" />
      <Compile Include="Assets\Scripts\PlayerScriptableObject.cs" />
+     <Compile Include="Assets\Scripts\PopUpManager.cs" />
  <Reference Include="UnityEngine">
  <HintPath>C:/Program Files/Unity/Hub/Editor/2020.1.4f1/2019.4.21f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
  </Reference>

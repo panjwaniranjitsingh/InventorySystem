@@ -42,4 +42,10 @@ public class Player : MonoSingleton<Player>
         Gems += GemsToAdd;
         ShowPlayerData();
     }
+
+    public void RemoveFromPlayer(int GemsToSub)
+    {
+        Gems -= GemsToSub;
+        ShowPlayerData();
+    }
 }
