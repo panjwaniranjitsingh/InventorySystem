@@ -11,6 +11,7 @@ public class ChestManager : MonoSingleton<ChestManager>
     [SerializeField] GameObject Message;
     [SerializeField] List<Chest> chestToUnlock;
     [SerializeField] int AllowedChestToAdd = 3;
+    [SerializeField] Sprite[] chestSprites;
     public bool timerStarted = false;
 
     public void CreateChest()
@@ -38,7 +39,7 @@ public class ChestManager : MonoSingleton<ChestManager>
                 }
                 if (chestScript.empty)
                 {
-                    chestScript.SetChestData(chestSOL.Chests[randomChest]);
+                    chestScript.SetChestData(chestSOL.Chests[randomChest],chestSprites[randomChest]);
                     chestToUnlock.Add(chestScript);
                     i = ChestSlots.Length + 1;
                 }
@@ -59,7 +60,7 @@ public class ChestManager : MonoSingleton<ChestManager>
     {
         if (chestScript.empty)
         {
-            chestScript.SetChestData(chestSOL.Chests[randomChest]);
+            chestScript.SetChestData(chestSOL.Chests[randomChest],chestSprites[randomChest]);
             chestToUnlock.Add(chestScript);
         }
     }

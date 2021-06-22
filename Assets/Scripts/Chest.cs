@@ -16,6 +16,7 @@ public class Chest : MonoBehaviour
     [SerializeField] GameObject BuyMessage;
     public bool empty;
     public bool canUnlock;
+    [SerializeField] Sprite emptySprite;
     // Start is called before the first frame update
     void Start()
     {
@@ -35,6 +36,7 @@ public class Chest : MonoBehaviour
             Status = "Empty";
             DisplayChestData();
             canUnlock = false;
+            gameObject.GetComponent<Image>().sprite = emptySprite;
         }
         if(startTimer)
         {
@@ -70,7 +72,7 @@ public class Chest : MonoBehaviour
         ChestManager.GetInstance().UnlockNextChest();
     }
 
-    public void SetChestData(ChestScriptableObject chestSO)
+    public void SetChestData(ChestScriptableObject chestSO,Sprite chestSprite)
     {
         //Debug.Log("SetChestData"+chestSO);
         locked = true;
@@ -82,6 +84,7 @@ public class Chest : MonoBehaviour
         Status = "Locked";
         UnlockGems = CountGemsToUnlock(TimeToUnlock);
         DisplayChestData();
+        gameObject.GetComponent<Image>().sprite = chestSprite;
     }
 
     private int CountGemsToUnlock(int timeToUnlock)

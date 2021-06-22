@@ -25,9 +25,9 @@ public class Player : MonoSingleton<Player>
 
     private void ShowPlayerData()
     {
-        transform.GetChild(0).gameObject.GetComponent<Text>().text ="Name:"+ Name;
-        transform.GetChild(1).gameObject.GetComponent<Text>().text ="Coins:"+Coins.ToString();
-        transform.GetChild(2).gameObject.GetComponent<Text>().text ="Gems:"+ Gems.ToString();
+        transform.GetChild(0).gameObject.GetComponent<Text>().text =Name;
+        transform.GetChild(1).gameObject.GetComponent<Text>().text =Coins.ToString();
+        transform.GetChild(2).gameObject.GetComponent<Text>().text =Gems.ToString();
     }
 
     // Update is called once per frame
