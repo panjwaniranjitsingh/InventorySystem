@@ -15,13 +15,13 @@ public class Chest : MonoBehaviour
     [SerializeField] DateTime startTimeStamp;
     [SerializeField] GameObject BuyMessage;
     public bool empty;
-    public bool canUnlock;
     [SerializeField] Sprite emptySprite;
+    public bool addedToQueue;
     // Start is called before the first frame update
     void Start()
     {
         empty = true;
-        canUnlock = false;
+        addedToQueue = false;
     }
 
     // Update is called once per frame
@@ -35,7 +35,7 @@ public class Chest : MonoBehaviour
             TimeToUnlock = 0;
             Status = "Empty";
             DisplayChestData();
-            canUnlock = false;
+            addedToQueue = false;
             gameObject.GetComponent<Image>().sprite = emptySprite;
         }
         if(startTimer)
@@ -118,13 +118,10 @@ public class Chest : MonoBehaviour
 
     public void StartTimer()
     {
-        if (canUnlock)
-        {
-            startTimeStamp = DateTime.Now;
-            Debug.Log("StartTimeStamp=" + startTimeStamp);
-            startTimer = true;
-            ChestManager.GetInstance().timerStarted = true;
-        }
+        startTimeStamp = DateTime.Now;
+        Debug.Log("StartTimeStamp=" + startTimeStamp);
+        startTimer = true;
+        ChestManager.GetInstance().timerStarted = true;
     }
 
     public void ChestClicked()
@@ -133,7 +130,7 @@ public class Chest : MonoBehaviour
         string message;
         if (empty)
         {
-            message="Chest is Empty";
+            message="Chest Slot is Empty";
             BuyMessage.GetComponent<PopUpManager>().OnlyDisplay(message);
             return;
         }
@@ -143,6 +140,7 @@ public class Chest : MonoBehaviour
             empty = true;
             message = "Added " + Coins + " coins and " + Gems + " gems";
             ChestManager.GetInstance().RemoveChestFromSlot(this);
+            addedToQueue = false;
             BuyMessage.GetComponent<PopUpManager>().OnlyDisplay(message);
         }
         else
@@ -155,7 +153,13 @@ public class Chest : MonoBehaviour
 
     public void UnlockChestUsingGems()
     {
-        Player.GetInstance().RemoveFromPlayer(UnlockGems);
-        ChestUnlocked();
+        bool chestCanBeUnlocked=Player.GetInstance().RemoveFromPlayer(UnlockGems);
+        if (chestCanBeUnlocked)
+            ChestUnlocked();
+        else
+        {
+            BuyMessage.SetActive(true);
+            BuyMessage.GetComponent<PopUpManager>().OnlyDisplay("Unsufficient Gems. Cannot Unlock Chest");
+        }
     }
 }

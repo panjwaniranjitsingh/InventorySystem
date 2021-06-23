@@ -30,12 +30,6 @@ public class Player : MonoSingleton<Player>
         transform.GetChild(2).gameObject.GetComponent<Text>().text =Gems.ToString();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void AddToPlayer(int coinsToAdd,int GemsToAdd)
     {
         Coins += coinsToAdd;
@@ -43,9 +37,14 @@ public class Player : MonoSingleton<Player>
         ShowPlayerData();
     }
 
-    public void RemoveFromPlayer(int GemsToSub)
+    public bool RemoveFromPlayer(int GemsToSub)
     {
-        Gems -= GemsToSub;
+        bool sufficientGems = true;
+        if (Gems >= GemsToSub)
+            Gems -= GemsToSub;
+        else
+            sufficientGems = false;
         ShowPlayerData();
+        return sufficientGems;
     }
 }

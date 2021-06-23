@@ -14,32 +14,32 @@ public class PopUpManager : MonoBehaviour
             StopCoroutine(disableCoRoutine);
         chestFrom = chest;
         transform.GetChild(0).GetComponent<Text>().text = message;
-        firstButton.text = "Start CountDown";
-        secondButton.text = "Unlock using Gems:" + gems.ToString();
-        if (chestFrom.canUnlock)
-        {
-            transform.GetChild(0).GetComponent<Text>().text = message;
-            if (!chestFrom.startTimer)
-            {
-                transform.GetChild(1).gameObject.SetActive(true);
-            }
-            else
-                transform.GetChild(1).gameObject.SetActive(false);
-            transform.GetChild(2).gameObject.SetActive(true);
-        }
+        if(!ChestManager.GetInstance().timerStarted)
+            firstButton.text = "Start CountDown";
         else
-        {
-            transform.GetChild(0).GetComponent<Text>().text = message + " Can not unlock";
+            firstButton.text = "Add Chest to Unlocking Queue";
+
+        secondButton.text = "Unlock using Gems:" + gems.ToString();      
+        transform.GetChild(0).GetComponent<Text>().text = message;
+        if(chestFrom.addedToQueue)
             transform.GetChild(1).gameObject.SetActive(false);
-            transform.GetChild(2).gameObject.SetActive(false);
-            StartCoroutine(DisablePopUp());
-        }
+        else
+            transform.GetChild(1).gameObject.SetActive(true);
+        transform.GetChild(2).gameObject.SetActive(true);
     }
 
     public void YesButton()
     {
         gameObject.SetActive(false);
-        chestFrom.StartTimer();
+        if (!ChestManager.GetInstance().timerStarted)
+        {
+            Debug.Log("First Chest to be added to Unlocking Queue.");
+            ChestManager.GetInstance().chestToUnlock.Add(chestFrom);
+            chestFrom.addedToQueue = true;
+            chestFrom.StartTimer();
+        }
+        else
+            ChestManager.GetInstance().AddChestToUnlockingQueue(chestFrom);
     }
 
     public void NoButton()
