@@ -1,13 +1,15 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class Player : MonoSingleton<Player>
 {
     [SerializeField] PlayerScriptableObject playerData;
-    [SerializeField] string Name;
-    [SerializeField] int Coins;
-    [SerializeField] int Gems;
+    [SerializeField] Text NameText;
+    [SerializeField] Text CoinsText;
+    [SerializeField] Text GemsText;
+    string Name;
+    int Coins;
+    int Gems;
     // Start is called before the first frame update
     void Start()
     {
@@ -25,9 +27,9 @@ public class Player : MonoSingleton<Player>
 
     private void ShowPlayerData()
     {
-        transform.GetChild(0).gameObject.GetComponent<Text>().text =Name;
-        transform.GetChild(1).gameObject.GetComponent<Text>().text =Coins.ToString();
-        transform.GetChild(2).gameObject.GetComponent<Text>().text =Gems.ToString();
+        NameText.text =Name;
+        CoinsText.text =Coins.ToString();
+        GemsText.text =Gems.ToString();
     }
 
     public void AddToPlayer(int coinsToAdd,int GemsToAdd)

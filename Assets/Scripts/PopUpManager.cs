@@ -4,45 +4,47 @@ using UnityEngine.UI;
 
 public class PopUpManager : MonoBehaviour
 {
-    [SerializeField] Chest chestFrom;
-    [SerializeField] Text firstButton;
-    [SerializeField] Text secondButton;
-    Coroutine disableCoRoutine;
-    public void SetChest(Chest chest, string message, int gems)
+    [SerializeField] ChestManager chestFrom;
+    [SerializeField] Text Message;
+    [SerializeField] Button firstButton;
+    [SerializeField] Button secondButton;
+    [SerializeField] Text firstButtonText;
+    [SerializeField] Text secondButtonText;
+    Coroutine PopUpCoroutine;
+    public void DisplayPopUp(ChestManager chest, string message, int gems)
     {
-        if(disableCoRoutine!=null)
-            StopCoroutine(disableCoRoutine);
+        if(PopUpCoroutine!=null)
+            StopCoroutine(PopUpCoroutine);
         chestFrom = chest;
-        transform.GetChild(0).GetComponent<Text>().text = message;
-        if(!ChestManager.GetInstance().timerStarted)
-            firstButton.text = "Start CountDown";
+        if(!ChestSlotManager.GetInstance().timerStarted)
+            firstButtonText.text = "Start CountDown";
         else
-            firstButton.text = "Add Chest to Unlocking Queue";
+            firstButtonText.text = "Add Chest to Unlocking Queue";
 
-        secondButton.text = "Unlock using Gems:" + gems.ToString();      
-        transform.GetChild(0).GetComponent<Text>().text = message;
+        secondButtonText.text = "Unlock using Gems:" + gems.ToString();
+        Message.text = message;
         if(chestFrom.addedToQueue)
-            transform.GetChild(1).gameObject.SetActive(false);
+            firstButton.transform.gameObject.SetActive(false);
         else
-            transform.GetChild(1).gameObject.SetActive(true);
-        transform.GetChild(2).gameObject.SetActive(true);
+            firstButton.transform.gameObject.SetActive(true);
+        secondButton.transform.gameObject.SetActive(true);
     }
 
-    public void YesButton()
+    public void FirstButtonSelected()
     {
         gameObject.SetActive(false);
-        if (!ChestManager.GetInstance().timerStarted)
+        if (!ChestSlotManager.GetInstance().timerStarted)
         {
             Debug.Log("First Chest to be added to Unlocking Queue.");
-            ChestManager.GetInstance().chestToUnlock.Add(chestFrom);
+            ChestSlotManager.GetInstance().unlockingQueue.Add(chestFrom);
             chestFrom.addedToQueue = true;
             chestFrom.StartTimer();
         }
         else
-            ChestManager.GetInstance().AddChestToUnlockingQueue(chestFrom);
+            ChestSlotManager.GetInstance().AddChestToUnlockingQueue(chestFrom);
     }
 
-    public void NoButton()
+    public void UnlockChestSelected()
     {
         gameObject.SetActive(false);
         chestFrom.UnlockChestUsingGems();
@@ -50,10 +52,10 @@ public class PopUpManager : MonoBehaviour
 
     public void OnlyDisplay(string message)
     {
-        transform.GetChild(0).GetComponent<Text>().text = message;
-        transform.GetChild(1).gameObject.SetActive(false);
-        transform.GetChild(2).gameObject.SetActive(false);
-        disableCoRoutine = StartCoroutine(DisablePopUp());
+        Message.text = message;
+        firstButton.transform.gameObject.SetActive(false);
+        secondButton.transform.gameObject.SetActive(false);
+        PopUpCoroutine = StartCoroutine(DisablePopUp());
     }
 
     IEnumerator DisablePopUp()
